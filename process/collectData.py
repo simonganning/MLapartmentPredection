@@ -5,6 +5,7 @@ from webcrawler import crawlerActions as crawler
 from postgreSQL_DB import databaseActions as action
 from postgreSQL_DB import setupDatabase as setup
 from postgreSQL_DB import generateTables as makeTables
+import threading
 
 
 def getData():

@@ -2,6 +2,9 @@
 from webcrawler import startup
 import re
 from playwright.sync_api import sync_playwright
+from postgreSQL_DB import databaseActions as db
+
+keepDigits = r'\D'
 
 def scrapePage(seleniumBase, page, domain):
     seleniumBase.sleep(2)
@@ -14,19 +17,29 @@ def scrapePage(seleniumBase, page, domain):
 
     print (pageurl)
 
-    testPage = page.locator('[class*="heading-5 whitespace-nowrap first-letter:uppercase"]')
+    testAttribute = page.locator('[class*="heading-5 whitespace-nowrap first-letter:uppercase"]')
 
     for pages in (oneFullPage):
         pages.click()
         seleniumBase.sleep(2)
-        datapoints = getObjectInfo(pages, seleniumBase, page, testPage)
-        seleniumBase.sleep(2)
+        pageurl = page.url
+        print (pageurl)
+
+        uniqueID = re.sub(keepDigits , "", pageurl )
+
+        if (db.isObjectInDB(uniqueID)):
+            datapoints = getObjectInfo(pages, seleniumBase, page, testAttribute)
+            seleniumBase.sleep(2)
+
+            # add it all to the DB
+            db.addObjectToDB(datapoints)
+
         page.go_back()
 
 
 
 def getObjectInfo(pages, seleniumBase, page, testPage):
-    keepDigits = r'\D'
+    
     
     livingArea = testPage.nth(0).inner_text()
     rooms = testPage.nth(1).inner_text()

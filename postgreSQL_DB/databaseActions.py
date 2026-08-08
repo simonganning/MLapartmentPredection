@@ -3,7 +3,9 @@ from postgreSQL_DB.Batch import Batch
 from postgreSQL_DB import setupDatabase as database
 
 
-def addObjectToDB():
+def addObjectToDB(dataPoints):
+    
+
     return True
 
 
@@ -17,16 +19,11 @@ def isObjectInDB(objectID):
             WHERE objectID = {objectID};
         """)
 
-    objectInDatabas = query.fetchall()
-
-   # connection.commit()
-   # query.close()
-   # connection.close()
-
-    if (objectInDatabas != NULL):
-        return True 
+    objectInDatabase = query.fetchone()
+    if objectInDatabase is not None:
+        return True
     else:
-        return False 
+        return False
 
 
 def pageHasNewObject():
@@ -59,13 +56,5 @@ def getBatchDates():
     # when a month is checked we mark it as cleared
     return dateObjects
 
-def objectOnPage():
-    # is there still an object on the page we have not viewed
-    return False
-
-
-def getNextPage():
-    # when the current page is empty we simply increment to the next page
-    return False
 
 getBatchDates()
