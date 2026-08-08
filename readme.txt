@@ -40,7 +40,7 @@ of what filter was used. I therfore collected the objects in batches of 6 months
 One year has between 35 000 - 40 000 objects. So each batch has 17 500 - 20 000 objects. 
 Well below the 35 000 margin. 
 
-First listing was sold 2008-06-17 and the last 2026-07-31
+First listing was sold 2012-07-01 and the last 2026-07-31
 If we look at previous research and how much they have collected
 
 https://arxiv.org/pdf/2505.01591 
@@ -53,6 +53,7 @@ Add how close to nearest bus stop
 Removed objects with missing data 
 Removed an attribute if more than 50 % of the objects did not contain it 
 Handled outliers with q1 - Qr 
+Center will be from "Sergelfontänen" 59.33259017582446, 18.065174222189306
 
 
 https://www.tandfonline.com/doi/full/10.1080/09599916.2020.1832558

@@ -1,11 +1,7 @@
 
-import setupDB as database
+from postgreSQL_DB import setupDatabase as database
 
-def createListingsTable():
-
-    connection = database.connectToDB()
-    query = connection.cursor()
-
+def createListingsTable(connection , query):
     query.execute("""--sql
             CREATE TABLE IF NOT EXISTS listings (
             objectId INT PRIMARY KEY,
@@ -25,7 +21,7 @@ def createListingsTable():
             firePlace BOOLEAN
             );
          """)
-
+    
     query.execute("""--sql
                 CREATE TABLE IF NOT EXISTS batchDates (
                 startDate VARCHAR(8),
@@ -57,11 +53,8 @@ def createListingsTable():
 
     rows = printRows(query)
 
-    for row in rows:
-            print(row)
-
-    query.close()
-    connection.close()
+   # for row in rows:
+   #         print(row)
 
     # everything went well no errors
     return True
@@ -86,8 +79,4 @@ def printRows(query):
                     SELECT *
                     FROM batchDates;
                 """)
-
-
     return query.fetchall()
-
-createListingsTable()

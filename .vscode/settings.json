@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./webcrawler",
+        "./postgreSQL_DB"
+    ],
+    "python.REPL.enableREPLSmartSend": false
+}
