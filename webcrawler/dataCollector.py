@@ -10,8 +10,9 @@ import http
 import startup as connectToWebsite
 
 def main():
-    proxyServers = getProxies()
-    connectToWebsite(proxyServers)
+   # proxyServers = getProxies() toDoLater
+   
+    seleniumBase , page = connectToWebsite()
     while(True):
         
         # returns two dates (start and end)
@@ -22,18 +23,34 @@ def main():
         startingPage = lastusedPage(dates)
         startingIndex = lastusedIndex(startingPage)
 
+        while(objectOnPage):
 
-        for pages in amountOfObjects:
-            print ("hej")
+            getNextPage()
+
+            while (pageHasNewObject):
+                collectPageData()
+                objectId = getUniquieObjectId()
+                addDataToDb()
+                objectCount = goBackToPage()
     
 
+def pageHasNewObject():
+    # is there an object on that page we have not collected? 
+    return False
 
 def getBatchDates():
     # look into database what the last month we checked was
     # when a month is checked we mark it as cleared
+    return True
+
+def objectOnPage():
+    # is there still an object on the page we have not viewed
+    return False
 
 
-
+def getNextPage():
+    # when the current page is empty we simply increment to the next page
+    return False
 
     
 
