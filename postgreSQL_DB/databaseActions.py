@@ -1,12 +1,35 @@
 
 from postgreSQL_DB.Batch import Batch
 from postgreSQL_DB import setupDatabase as database
+from webcrawler import Listing
 
 
-def addObjectToDB(dataPoints):
-    
-
-    return True
+def addObjectToDB(listing: Listing):
+    connection = database.connectToDB()
+    query = connection.cursor()
+    query.execute("""
+        INSERT INTO listings (
+            objectId, finalPrice, adress, municipal, areaName, dateSold,
+            livingAreaSquareMeter, amountOfRooms, monthlyFee, yearBuilt,
+            xCordinates, yCorinates, elevator, balcony, firePlace
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (
+        listing.objectId,
+        listing.finalPrice,
+        listing.adress,
+        listing.municipal,
+        listing.areaName,
+        listing.dateSold,
+        listing.livingAreaSqM,
+        listing.amountOfRooms,
+        listing.monthlyFee,
+        listing.yearBuilt,
+        listing.xCordinates,
+        listing.yCorinates,
+        listing.elevator,
+        listing.balcony,
+        listing.firePlace,
+    ))
 
 
 def isObjectInDB(objectID):

@@ -1,7 +1,17 @@
 class Listing:
-    def __init__(self, finalPrice, adress, municipal, areaName, dateSold, livingAreaSqM, amountOfRooms
-                 , monthlyFee, yearBuilt, xCordinates , yCorinates , elevator, balcony, firePlace ):
-        self.startDate = startDate
-        self.endDate = endDate
-        self.lastPage = lastPage
-        self.lastIndex = lastIndex
+    def __init__(self, finalPrice, adress, municipal, areaName, dateSold, livingAreaSqM, amountOfRooms,
+                 monthlyFee, yearBuilt, xCordinates, yCorinates, elevator, balcony, firePlace):
+        self.finalPrice = finalPrice
+        self.adress = adress
+        self.municipal = municipal
+        self.areaName = areaName
+        self.dateSold = dateSold
+        self.livingAreaSqM = livingAreaSqM
+        self.amountOfRooms = amountOfRooms
+        self.monthlyFee = monthlyFee
+        self.yearBuilt = yearBuilt
+        self.xCordinates = xCordinates
+        self.yCorinates = yCorinates
+        self.elevator = elevator
+        self.balcony = balcony
+        self.firePlace = firePlace
