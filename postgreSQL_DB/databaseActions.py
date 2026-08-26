@@ -5,6 +5,7 @@ from webcrawler import Listing
 
 
 def addObjectToDB(listing: Listing):
+    #https://docs.mapbox.com/playground/geocoding/
     connection = database.connectToDB()
     query = connection.cursor()
     query.execute("""
