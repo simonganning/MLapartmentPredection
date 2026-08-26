@@ -7,13 +7,22 @@ from webcrawler import Listing
 
 keepDigits = r'\D'
 
-def scrapePage(seleniumBase, page, domain):
+# this method will scrape all of the pages in a specific time period and terminate when finnished
+def multiScraper(seleniumBase, page):
+
+
+
+    scrapePage(seleniumBase, page)
+
+# this method will scrape a page containing max 35 unique objects
+# it will collect all the data in each object and put it in a DB
+def scrapePage(seleniumBase, page):
     seleniumBase.sleep(2)
     print("before locator")
     #page.locator("#didomi-notice-agree-button").click()
     print ("after locator")
     seleniumBase.sleep(3)
-    oneFullPage = page.locator('[class*="object-card__heading--logo"]').all()
+    listingsOnOnePage = page.locator('[class*="object-card__heading--logo"]').all()
     pageurl = page.url
 
     print (pageurl)
@@ -24,8 +33,8 @@ def scrapePage(seleniumBase, page, domain):
 
     testAttribute = page.locator('[class*="heading-5 whitespace-nowrap first-letter:uppercase"]')
 
-    for pages in (oneFullPage):
-        pages.click()
+    for objects in (listingsOnOnePage):
+        objects.click()
         seleniumBase.sleep(2)
         pageurl = page.url
         print (pageurl)
@@ -33,7 +42,7 @@ def scrapePage(seleniumBase, page, domain):
         uniqueID = re.sub(keepDigits , "", pageurl )
 
         if (db.isObjectInDB(uniqueID)):
-            datapoints = getObjectInfo(pages, seleniumBase, page, testAttribute)
+            datapoints = getObjectInfo(objects, seleniumBase, page, testAttribute)
             seleniumBase.sleep(2)
 
             # add it all to the DB
@@ -43,7 +52,7 @@ def scrapePage(seleniumBase, page, domain):
 
 
 
-def getObjectInfo(pages, seleniumBase, page, testPage):
+def getObjectInfo(seleniumBase, testPage):
     
     object = Listing()
     object.livingAreaSqM = livingArea = testPage.nth(0).inner_text()

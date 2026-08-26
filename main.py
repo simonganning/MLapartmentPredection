@@ -4,10 +4,11 @@
 
 
 from process import collectData
+import threading
 
 
 def main():
-   # proxyServers = getProxies() do this later when we have one IP working
+    proxyServers = getProxies() # do this later when we have one IP working
     collectData.getData()
 
     # investigate data 

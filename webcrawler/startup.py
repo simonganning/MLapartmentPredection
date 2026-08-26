@@ -17,8 +17,9 @@ def startup(dates):
     browser = p.chromium.connect_over_cdp(endpoint_url)
     context = browser.contexts[0]
     page = context.pages[0]
-    domain = page.goto(webpage)
+    page.goto(webpage)
     sb.sleep(2)
+    # an "do you agree" button that always appear
     page.locator("#didomi-notice-agree-button").click()
 
-    return (sb, page, p, domain)
+    return (sb, page, p)
