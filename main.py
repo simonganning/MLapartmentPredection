@@ -1,6 +1,7 @@
 # Much of the code is based on the links below
 # https://github.com/seleniumbase/SeleniumBase/blob/master/examples/cdp_mode/playwright/ReadMe.md
 # https://playwright.dev/docs/api/class-locator
+from postgreSQL_DB import databaseActions as action
 
 
 from process import collectData
@@ -8,9 +9,9 @@ import threading
 
 
 def main():
+    dates = action.getBatchDates()
     proxyServers = getProxies() # do this later when we have one IP working
     collectData.getData()
-
     # investigate data 
     # create test set 
     # train models xyz

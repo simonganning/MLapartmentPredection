@@ -4,11 +4,27 @@ import re
 from playwright.sync_api import sync_playwright
 from postgreSQL_DB import databaseActions as db
 from webcrawler import Listing
+from webcrawler import startup as connectToWebsite
 
 keepDigits = r'\D'
 
+
+def runCrawler(date):
+
+    seleniumBase, page, playwright = connectToWebsite.startup(date)
+
+    multiScraper(
+        seleniumBase,
+        page,
+        date
+    )
+
+    seleniumBase.sleep(5)
+
+    playwright.stop()
+
 # this method will scrape all of the pages in a specific time period and terminate when finnished
-def multiScraper(seleniumBase, page):
+def multiScraper(seleniumBase, page, date):
 
 
 

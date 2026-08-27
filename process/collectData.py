@@ -16,12 +16,9 @@ def getData():
     makeTables.createListingsTable(connection, query)
     dates = action.getBatchDates()
 
-    thread = threads.startThreads(dates)
+    threads.startThreads(dates)
 
-    seleniumBase , page , playwright = connectToWebsite.startup(thread)
-    crawler.multiScraper(seleniumBase, page)
-    seleniumBase.sleep(5)
-    playwright.stop() 
+    
     connection.close()
     query.close()
     
