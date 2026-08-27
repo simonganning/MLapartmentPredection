@@ -37,11 +37,11 @@ def isObjectInDB(objectID):
     connection = database.connectToDB()
     query = connection.cursor()
 
-    query.execute("""--sql
-            SELECT objectID
-            FROM listings
-            WHERE objectID = {objectID};
-        """)
+    query.execute(f"""
+        SELECT objectID
+        FROM listings
+        WHERE objectID = {objectID};
+            """)
 
     objectInDatabase = query.fetchone()
     if objectInDatabase is not None:
@@ -79,6 +79,3 @@ def getBatchDates():
     # look into database what the last month we checked was
     # when a month is checked we mark it as cleared
     return dateObjects
-
-
-getBatchDates()

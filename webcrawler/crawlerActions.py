@@ -28,7 +28,7 @@ def multiScraper(seleniumBase, page, webpage):
     #scrape one page
     maxPages = 1000
     #go to the next page
-    for i in maxPages:
+    for i in range(maxPages):
         scrapePage(seleniumBase, page)
         webpage = webpage + f"&page={i}"
         page.goto(webpage)

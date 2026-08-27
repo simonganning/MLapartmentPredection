@@ -5,7 +5,6 @@ from postgreSQL_DB import databaseActions as action
 
 
 from process import collectData
-import threading
 
 
 def main():
