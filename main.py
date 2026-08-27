@@ -9,8 +9,6 @@ import threading
 
 
 def main():
-    dates = action.getBatchDates()
-    proxyServers = getProxies() # do this later when we have one IP working
     collectData.getData()
     # investigate data 
     # create test set 
@@ -19,5 +17,4 @@ def main():
     # if we have already trained a model we should not train it again!
 
 
-   
 main()

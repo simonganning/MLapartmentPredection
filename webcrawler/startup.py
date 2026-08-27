@@ -22,4 +22,4 @@ def startup(dates):
     # an "do you agree" button that always appear
     page.locator("#didomi-notice-agree-button").click()
 
-    return (sb, page, p)
+    return (sb, page, p, webpage)

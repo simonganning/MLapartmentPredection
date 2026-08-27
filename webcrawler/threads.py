@@ -1,12 +1,12 @@
 from webcrawler import crawlerActions as crawler
-from webcrawler import startup as connectToWebsite
+
 import threading
 
 def startThreads(dates):
 
     threads = []
-
-    for date in dates:
+    #for date in dates:
+    for date in range(3):
 
         thread = threading.Thread(
             target=crawler.runCrawler,

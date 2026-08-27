@@ -11,12 +11,12 @@ keepDigits = r'\D'
 
 def runCrawler(date):
 
-    seleniumBase, page, playwright = connectToWebsite.startup(date)
+    seleniumBase, page, playwright, webpage = connectToWebsite.startup(date)
 
     multiScraper(
         seleniumBase,
         page,
-        date
+        webpage
     )
 
     seleniumBase.sleep(5)
@@ -24,11 +24,16 @@ def runCrawler(date):
     playwright.stop()
 
 # this method will scrape all of the pages in a specific time period and terminate when finnished
-def multiScraper(seleniumBase, page, date):
-
-
-
-    scrapePage(seleniumBase, page)
+def multiScraper(seleniumBase, page, webpage):
+    #scrape one page
+    maxPages = 1000
+    #go to the next page
+    for i in maxPages:
+        #code ....
+        scrapePage(seleniumBase, page)
+        webpage = webpage + f"&page={i}"
+        page.goto(webpage)
+    #end when we go to a page and all the listings are done
 
 # this method will scrape a page containing max 35 unique objects
 # it will collect all the data in each object and put it in a DB
@@ -42,10 +47,6 @@ def scrapePage(seleniumBase, page):
     pageurl = page.url
 
     print (pageurl)
-    # adress <h1 class="heading-3 sm:heading-2 mt-4">Tornslingan 43</h1>
-    # area and municpal <span class="text-sm text-content-secondary mt-2">Lägenhet · Trångsund · Huddinge</span>
-    # proce <span class="heading-2">1&nbsp;825&nbsp;000&nbsp;kr</span>
-    # for much else <div class="article-typography"><p>Den har <strong>4&nbsp;647</strong> kr/mån i avgift</p>
 
     testAttribute = page.locator('[class*="heading-5 whitespace-nowrap first-letter:uppercase"]')
 
