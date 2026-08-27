@@ -1,6 +1,6 @@
 class Listing:
     def __init__(self, finalPrice, adress, municipal, areaName, dateSold, livingAreaSqM, amountOfRooms,
-                 monthlyFee, yearBuilt, xCordinates, yCorinates, elevator, balcony, firePlace):
+                 monthlyFee, yearBuilt, elevator, balcony, firePlace):
         self.finalPrice = finalPrice
         self.adress = adress
         self.municipal = municipal
@@ -10,8 +10,6 @@ class Listing:
         self.amountOfRooms = amountOfRooms
         self.monthlyFee = monthlyFee
         self.yearBuilt = yearBuilt
-        self.xCordinates = xCordinates
-        self.yCorinates = yCorinates
         self.elevator = elevator
         self.balcony = balcony
         self.firePlace = firePlace
