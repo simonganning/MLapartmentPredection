@@ -2,9 +2,6 @@
 from seleniumbase import sb_cdp
 from playwright.sync_api import sync_playwright
 
-
-
-
 def startup(dates):
     startDate = dates.startDate
     endDate = dates.endDate
