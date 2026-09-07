@@ -1,6 +1,5 @@
 class Batch:
-    def __init__(self, startDate, endDate, lastPage, lastIndex):
+    def __init__(self, startDate, endDate, currentPage):
         self.startDate = startDate
         self.endDate = endDate
-        self.lastPage = lastPage
-        self.lastIndex = lastIndex
+        self.currentPage = currentPage

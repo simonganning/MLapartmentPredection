@@ -9,8 +9,8 @@ def startThreads(dates):
     for date in dates[:3]:
 
         thread = threading.Thread(
-            target=crawler.runCrawler,
-            args=(date,)
+            target=crawler.runCrawler(date),
+            args=(date, )
         )
 
         threads.append(thread)

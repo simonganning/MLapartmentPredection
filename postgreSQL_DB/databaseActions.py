@@ -8,12 +8,12 @@ def addObjectToDB(listing: Listing):
     #https://docs.mapbox.com/playground/geocoding/
     connection = database.connectToDB()
     query = connection.cursor()
-    query.execute("""
+    query.execute("""--sql
         INSERT INTO listings (
             objectId, finalPrice, adress, municipal, areaName, dateSold,
             livingAreaSquareMeter, amountOfRooms, monthlyFee, yearBuilt,
-            xCordinates, yCorinates, elevator, balcony, firePlace
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            elevator, balcony, firePlace
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, (
         listing.objectId,
         listing.finalPrice,
@@ -25,12 +25,11 @@ def addObjectToDB(listing: Listing):
         listing.amountOfRooms,
         listing.monthlyFee,
         listing.yearBuilt,
-        listing.xCordinates,
-        listing.yCorinates,
         listing.elevator,
         listing.balcony,
         listing.firePlace,
     ))
+    
 
 
 def isObjectInDB(objectID):
@@ -59,9 +58,8 @@ def getBatchDates():
     query = connection.cursor()
 
     query.execute("""--sql
-                SELECT startDate, endDate, lastPageUsed, lastObjectUsed
-                FROM batchDates
-                WHERE usedDate = FALSE;
+                SELECT startDate, endDate, lastPageUsed
+                FROM batchDates;
             """)
 
     dates = query.fetchall()
@@ -72,7 +70,9 @@ def getBatchDates():
 
     for date in dates:
         batch = Batch(
-        date[0], date[1], date[2] , date[3])
+        date[0], date[1], date[2])
+
+        print(f" current page {batch.currentPage} end date  + {batch.endDate} start date  + {batch.startDate}")
 
         dateObjects.append(batch)
 

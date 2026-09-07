@@ -24,11 +24,9 @@ def createListingsTable(connection , query):
     
     query.execute("""--sql
                 CREATE TABLE IF NOT EXISTS batchDates (
-                startDate VARCHAR(8),
-                endDate VARCHAR(8),
-                lastPageUsed INT,
-                lastObjectUsed INT,
-                usedDate BOOLEAN
+                startDate VARCHAR(10),
+                endDate VARCHAR(10),
+                lastPageUsed INT
                 );
              """)
 
@@ -39,13 +37,13 @@ def createListingsTable(connection , query):
     
     doesDatesExist = query.fetchone() is not None
 
-    if  not doesDatesExist:
+    if not doesDatesExist:
         datesList = generateDates()
 
         for start_date, end_date in datesList:
             query.execute("""
                 INSERT INTO batchDates
-                    (startDate, endDate, lastPageUsed, lastObjectUsed, usedDate)
+                    (startDate, endDate, lastPageUsed)
                 VALUES (%s, %s, %s, %s, %s);
             """, (start_date, end_date, 0, 0, False))
     
@@ -53,8 +51,8 @@ def createListingsTable(connection , query):
 
     rows = printRows(query)
 
-   # for row in rows:
-   #         print(row)
+    #for row in rows:
+        #print(row)
 
     # everything went well no errors
     return True

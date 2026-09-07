@@ -10,3 +10,4 @@ def rotatingProxies():
 
     # if the IP fails we get back here and get a new (or we fetch every singel tow IPs 
     # maybe each thread can swith between them or some )
+    return None
