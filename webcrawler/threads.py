@@ -6,7 +6,7 @@ def startThreads(dates):
 
     threads = []
     #for date in dates:
-    for date in dates[:3]:
+    for date in dates[:1]:
 
         thread = threading.Thread(
             target=crawler.runCrawler(date),

@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 def startup(dates):
     startDate = dates.startDate
     endDate = dates.endDate
-    pageNumber = dates.currentPage
+    pageNumber = dates.lastPageUsed
     webpage = f"https://www.booli.se/sok/slutpriser?maxSoldDate={endDate}&minSoldDate={startDate}&objectType=L%C3%A4genhet&page={pageNumber}"
     sb = sb_cdp.Chrome(locale="en")
     endpoint_url = sb.get_endpoint_url()

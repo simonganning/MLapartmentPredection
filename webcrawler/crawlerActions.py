@@ -3,6 +3,8 @@ from postgreSQL_DB import databaseActions as db
 from webcrawler.Listing import Listing 
 from webcrawler import startup as connectToWebsite
 from time import sleep
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
 
 keepDigits = r'\D'
 
@@ -12,13 +14,15 @@ def runCrawler(date):
     # here we should maybe check tthe last used page , update it etc
 
     seleniumBase, page, playwright, webpage = connectToWebsite.startup(date)
-    startPage = date.currentPage
+    startPage = date.lastPageUsed
+    startDate = date.startDate
 
     multiScraper(
         seleniumBase,
         page,
         webpage,
-        startPage
+        startPage,
+        startDate
     )
 
     seleniumBase.sleep(5)
@@ -26,37 +30,56 @@ def runCrawler(date):
     playwright.stop()
 
 # this method will scrape all of the pages in a specific time period and terminate when finnished
-def multiScraper(seleniumBase, page, webpage, startpage):
+def multiScraper(seleniumBase, page, webpage, startpage, startDate):
     #scrape one page
-    maxPages = 1000 - startpage
+    maxPageRaw = page.locator(".search-page__module-container .text-center p.m-2").inner_text()
+    findMaxPage = re.search(r"av\s*(\d+)", maxPageRaw)
+    maxPage = int(findMaxPage.group(1)) if findMaxPage else None
+    print (maxPage)
+    maxPages = maxPage - startpage
     #go to the next page
-    for i in range(maxPages):
+    for i in range(startpage + 1, maxPages):
         scrapePage(seleniumBase, page)
-        webpage = webpage
+        webpage = webpage + f"&page={i}"
         page.goto(webpage)
         # if there are no more pages to scrape we break the loop
         if (page.locator('[class*="object-card__heading--logo"]') is None):
+
+            # make the dateChecked True
+            db.checkDate(startDate, i)
+
+
             break
     #end when we go to a page and all the listings are done
 
 # this method will scrape a page containing max 35 unique objects
 # it will collect all the data in each object and put it in a DB
 def scrapePage(seleniumBase, page):
-    seleniumBase.sleep(3)
+    seleniumBase.sleep(2)
     listingsOnOnePage = page.locator('[class*="object-card__heading--logo"]').all()
 
     for objects in (listingsOnOnePage):
         objects.click()
         getObjectInfo(page)
-        sleep(2)
+        sleep(3)
         page.go_back()
+
+    # increment the last page used
 
 
 
 def getObjectInfo(page):
 
+    # TODO
+    # Need to add checks for price, alternative ways and municpals can somtimes have one value
+
     # final price
-    finalPriceRaw = page.locator("span.heading-2").first.inner_text()
+    try:
+        finalPriceRaw = page.locator("span.heading-2").first.inner_text(timeout=3000)
+    except PlaywrightTimeoutError:
+        finalPriceRaw = "0"
+        print("Price not found, skipping")
+
     finalPrice = re.sub(keepDigits, "", finalPriceRaw )
     #finalPrice.strip()
     print(finalPrice)

@@ -1,5 +1,5 @@
 
-from postgreSQL_DB.Batch import Batch
+from postgreSQL_DB.BatchDate import BatchDate 
 from postgreSQL_DB import setupDatabase as database
 from webcrawler import Listing
 
@@ -49,16 +49,22 @@ def isObjectInDB(objectID):
         return False
 
 
-def pageHasNewObject():
-    # is there an object on that page we have not collected? 
-    return False
+def checkDate(startDate, pageNumber):
+    connection = database.connectToDB()
+    query = connection.cursor()
+    query.execute("""--sql
+            UPDATE batchDates
+            SET lastPageUsed = %s
+            WHERE startDate = %s
+        """, (pageNumber, startDate))
+    connection.commit()
 
 def getBatchDates():
     connection = database.connectToDB()
     query = connection.cursor()
 
     query.execute("""--sql
-                SELECT startDate, endDate, lastPageUsed
+                SELECT startDate, endDate, lastPageUsed, dateChecked
                 FROM batchDates;
             """)
 
@@ -66,13 +72,11 @@ def getBatchDates():
 
     dateObjects = []
 
-    #print(dates)
-
     for date in dates:
-        batch = Batch(
-        date[0], date[1], date[2])
+        batch = BatchDate(
+        date[0], date[1], date[2], date[3])
 
-        print(f" current page {batch.currentPage} end date  + {batch.endDate} start date  + {batch.startDate}")
+        print(f" current page {batch.lastPageUsed} end date  + {batch.endDate} start date  + {batch.startDate}")
 
         dateObjects.append(batch)
 

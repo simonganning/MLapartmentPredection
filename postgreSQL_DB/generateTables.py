@@ -1,32 +1,40 @@
 
-from postgreSQL_DB import setupDatabase as database
-
 def createListingsTable(connection , query):
+
+    query.execute("""--sql
+                DROP TABLE IF EXISTS listings
+                ;
+             """)
+
     query.execute("""--sql
             CREATE TABLE IF NOT EXISTS listings (
             objectId INT PRIMARY KEY,
             finalPrice INT,
-            adress VARCHAR(100),
-            municipal VARCHAR(50),
-            areaName VARCHAR(50),
-            dateSold VARCHAR(10),
+            adress VARCHAR(255),
+            municipal VARCHAR(255),
+            areaName VARCHAR(255),
+            dateSold VARCHAR(255),
             livingAreaSquareMeter INT,
             amountOfRooms INT,
             monthlyFee INT,
             yearBuilt INT,
-            xCordinates INT,
-            yCorinates INT,
             elevator BOOLEAN,
             balcony BOOLEAN,
             firePlace BOOLEAN
             );
          """)
+
+    query.execute("""--sql
+                    DROP TABLE IF EXISTS batchDates
+                    ;
+                 """)
     
     query.execute("""--sql
                 CREATE TABLE IF NOT EXISTS batchDates (
                 startDate VARCHAR(10),
                 endDate VARCHAR(10),
-                lastPageUsed INT
+                lastPageUsed INT ,
+                dateChecked BOOLEAN
                 );
              """)
 
@@ -43,38 +51,29 @@ def createListingsTable(connection , query):
         for start_date, end_date in datesList:
             query.execute("""
                 INSERT INTO batchDates
-                    (startDate, endDate, lastPageUsed)
-                VALUES (%s, %s, %s, %s, %s);
-            """, (start_date, end_date, 0, 0, False))
+                    (startDate, endDate, lastPageUsed, dateChecked)
+                VALUES (%s, %s, %s, %s);
+            """, (start_date, end_date, 0, False))
     
     connection.commit()
 
-    rows = printRows(query)
-
-    #for row in rows:
-        #print(row)
-
-    # everything went well no errors
     return True
 
 
 def generateDates():
-    # first date is 20120101
-    # last date is 20251231
-    # gives us 13 whole years and two half years
-    # 28 different batches
-    dates = []
+   
+    dates = [
+        ("2024-01-01", "2024-03-31"),
+        ("2024-04-01", "2024-06-30"),
+        ("2024-07-01", "2024-09-30"),
+        ("2024-10-01", "2024-12-31"),
+        ("2025-01-01", "2025-03-31"),
+        ("2025-04-01", "2025-06-30"),
+        ("2025-07-01", "2025-09-30"),
+        ("2025-10-01", "2025-12-31"),
+        ("2026-01-01", "2026-03-31"),
+        ("2026-04-01", "2026-06-30"),
+        ("2026-07-01", "2026-08-31")
+        ]
     
-    for year in range(2012, 2026):
-        dates.append((f"{year}0101" , f"{year}0631"))
-        dates.append((f"{year}0701" , f"{year}1231"))
-
-    dates.append(("20260101" , "20260731"))
     return dates
-
-def printRows(query):
-    query.execute("""--sql
-                    SELECT *
-                    FROM batchDates;
-                """)
-    return query.fetchall()
